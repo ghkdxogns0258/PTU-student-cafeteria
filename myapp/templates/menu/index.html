@@ -1,0 +1,44 @@
+<!-- myapp/templates/menu/index.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% for today_menu in menu_list %}
+    <!-- 현재 날짜의 메뉴만 표시 -->
+    {% if today_menu.date == current_date %}
+        <section class="flex-1 border-r text-center mx-auto menu-section">
+            <h2 class="text-2xl font-semibold mb-8 p-6">({{ today_menu.date|date:"m/d" }})오늘의 아침 메뉴</h2>
+            {% if today_menu.breakfast %}
+                <!-- 매진 여부에 따라 텍스트 스타일 변경 -->
+                <p class="text-xl {% if today_menu.breakfast_sold_out %}text-red-600{% endif %}">
+                    {% autoescape off %}{{ today_menu.breakfast|safe|linebreaksbr }}{% endautoescape %}
+                    {% if today_menu.breakfast_sold_out %} <br>(매진, {{ today_menu.breakfast_sold_out_time|date:"H:i" }}){% endif %}
+                </p>
+            {% endif %}
+        </section>
+        <section class="flex-1 text-center mx-auto menu-section">
+            <h2 class="text-2xl font-semibold mb-8 p-6">({{ today_menu.date|date:"m/d" }})오늘의 점심 메뉴</h2>
+            {% if today_menu.lunch %}
+                <!-- 매진 여부에 따라 텍스트 스타일 변경 -->
+                <p class="text-xl {% if today_menu.lunch_sold_out %}text-red-600{% endif %}">
+                    {% autoescape off %}{{ today_menu.lunch|safe|linebreaksbr }}{% endautoescape %}
+                    {% if today_menu.lunch_sold_out %} <br>(매진, {{ today_menu.lunch_sold_out_time|date:"H:i" }}){% endif %}
+                </p>
+            {% endif %}
+        </section>
+    {% endif %}
+{% endfor %}
+
+<!-- 오늘의 메뉴들 간격 조절 -->
+<style>
+    .menu-section {
+        margin-bottom: 20px;
+    }
+</style>
+
+<p class="custom-text" style="position: absolute; top: 600px; left: 380px; margin-bottom: 10px;">재학생:1000원</p>
+<p class="custom-text" style="position: absolute; top: 625px; left: 380px; margin-bottom: 10px;">외부인:4000원</p>
+<p class="custom-text" style="position: absolute; top: 600px; left: 1210px; margin-bottom: 10px;">재학생:6500원</p>
+<p class="custom-text" style="position: absolute; top: 625px; left: 1210px; margin-bottom: 10px;">외부인:6900원</p>
+
+{% endblock %}
